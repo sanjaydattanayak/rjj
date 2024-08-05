@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<!-- saved from url=(0048)https://app.onecompiler.com/42n8t4gm6_42naeag6q/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Records - Poornima Finance</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 10px 0;
+        }
+
+        header h1 {
+            text-align: center;
+            margin: 0;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            text-align: center;
+        }
+
+        nav ul li {
+            display: inline;
+            margin: 0 10px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+
+        #data-entry {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #data-entry h2 {
+            text-align: center;
+        }
+
+        #data-entry-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        #data-entry-form label {
+            margin-top: 10px;
+        }
+
+        #data-entry-form input {
+            padding: 10px;
+            margin-top: 5px;
+        }
+
+        #data-entry-form button {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #data-entry-form button:hover {
+            background-color: #555;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Poornima Finance</h1>
+        <nav>
+            <ul>
+                <li><a href="https://app.onecompiler.com/">Home</a></li>
+                <li><a href="https://app.onecompiler.com/data-entry">Data Entry</a></li>
+                <li><a href="https://app.onecompiler.com/view-records">View Records</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="welcome">
+            <h2>Welcome to Poornima Finance</h2>
+            <p>Record and manage your financial data easily.</p>
+        </section>
+
+        <section id="data-entry" style="display:none;">
+            <h2>Data Entry</h2>
+            <form id="data-entry-form" action="https://app.onecompiler.com/data-entry" method="POST">
+                <label for="date">Date:</label>
+                <input type="date" id="date" name="date" required="">
+                
+                <label for="description">Description:</label>
+                <input type="text" id="description" name="description" required="">
+                
+                <label for="amount">Amount:</label>
+                <input type="number" id="amount" name="amount" required="">
+                
+                <button type="submit">Submit</button>
+            </form>
+        </section>
+
+        <section id="view-records" style="display:none;">
+            <h2>View Records</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Description</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody id="records-table-body">
+                    <!-- Records will be dynamically inserted here -->
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2024 Poornima Finance. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const dataEntryLink = document.querySelector('a[href="/data-entry"]');
+            const viewRecordsLink = document.querySelector('a[href="/view-records"]');
+            const dataEntrySection = document.getElementById('data-entry');
+            const viewRecordsSection = document.getElementById('view-records');
+            const welcomeSection = document.getElementById('welcome');
+
+            dataEntryLink.addEventListener('click', (event) => {
+                event.preventDefault();
+                welcomeSection.style.display = 'none';
+                viewRecordsSection.style.display = 'none';
+                dataEntrySection.style.display = 'block';
+            });
+
+            viewRecordsLink.addEventListener('click', (event) => {
+                event.preventDefault();
+                welcomeSection.style.display = 'none';
+                dataEntrySection.style.display = 'none';
+                viewRecordsSection.style.display = 'block';
+
+                fetch('/records')
+                    .then(response => response.json())
+                    .then(records => {
+                        const recordsTableBody = document.getElementById('records-table-body');
+                        recordsTableBody.innerHTML = '';
+                        records.forEach(record => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>${record.date}</td>
+                                <td>${record.description}</td>
+                                <td>${record.amount}</td>
+                            `;
+                            recordsTableBody.appendChild(row);
+                        });
+                    });
+            });
+        });
+    </script>
+
+
+</body></html>
